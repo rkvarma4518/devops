@@ -1,0 +1,14 @@
+- hosts: master
+  become: true
+  tasks:
+    - name: Install Tomcat 9
+      apt:
+        name: tomcat9
+        state: present
+
+    - name: Echo tomcat Version
+      command: tomcat -version
+      register: tomcat_version_output
+
+    - debug:
+        msg: "{{ tomcat_version_output.stdout_lines }}"
