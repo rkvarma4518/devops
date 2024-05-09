@@ -1,0 +1,29 @@
+FROM ubuntu
+MAINTAINER Rahul<rahul@domain.tld>
+
+# Update package list, upgrade packages, and install Java
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y openjdk-11-jdk curl
+
+# Verify Java installation
+RUN java --version
+
+# Add Jenkins repository key and add the Jenkins repository
+RUN curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update package list
+RUN apt update -y
+
+# Install Jenkins
+RUN apt install -y jenkins
+
+# Download Jenkins war file
+RUN curl -fsSL -o /usr/share/jenkins/jenkins.war https://get.jenkins.io/war-stable/latest/jenkins.war
+
+# Expose Jenkins port
+EXPOSE 8080
+
+# Start Jenkins
+CMD java -jar /usr/share/jenkins/jenkins.war --httpPort=8080

@@ -1,0 +1,22 @@
+# Use Ubuntu as base image
+FROM ubuntu
+
+# Maintainer information
+MAINTAINER Rahul <rahul@domain.tld>
+
+# Update package list, upgrade packages, and install Java
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y openjdk-11-jdk curl
+
+# Verify Java installation
+RUN java --version
+
+# Install Tomcat 9 and Tomcat admin package
+RUN apt install -y tomcat9 tomcat9-admin
+
+# Expose the default Tomcat ports
+EXPOSE 8080 8005
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]

@@ -1,0 +1,16 @@
+FROM ubuntu
+MAINTAINER Rahul <rahul@domain.tld>
+
+# Update package list, upgrade packages, and install Java
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y openjdk-11-jdk curl
+
+# Verify Java installation
+RUN java --version
+
+# Install Maven
+RUN apt install -y maven
+
+# Verify Maven installation
+RUN mvn --version
